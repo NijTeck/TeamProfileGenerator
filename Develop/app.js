@@ -1,5 +1,6 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
+const Employee = require("./lib/Employee");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
@@ -9,6 +10,31 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+
+const createManager = inquirer.prompt([
+    {
+   type: "input",
+   name: "managerName",
+   message: 'What is the managers name'
+},    {
+    type: "input",
+    name: "ID",
+    message: 'Please provide ID number'
+ },   {
+    type: "input",
+    name: "Email",
+    message: 'PLease provide Email'
+ },   {
+    type: "input",
+    name: "Bin Location",
+    message: 'Where do you sit'
+ }
+
+]).then(res=> {
+
+
+    
+})
 
 
 // Write code to use inquirer to gather information about the development team members,
