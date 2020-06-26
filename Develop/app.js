@@ -11,12 +11,17 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// Write code to use inquirer to gather information about the development team members,
+// and to create objects for each team member (using the correct classes as blueprints!)
+
 const createManager = inquirer.prompt([
     {
    type: "input",
    name: "managerName",
-   message: 'What is the managers name'
-},    {
+   message: 'What is the managers name',
+
+},  
+  {
     type: "input",
     name: "ID",
     message: 'Please provide ID number'
@@ -32,13 +37,33 @@ const createManager = inquirer.prompt([
 
 ]).then(res=> {
 
-
-    
 })
 
+// Linking to HTML pages //
+app.get("/", function (req, res) {
+   res.sendFile(path.join(__dirname, "home.html"));
+ });
+ app.get("/engineer", function (req, res) {
+   res.sendFile(path.join(__dirname, "engineer.html"));
+ });
+ app.get("/intern", function (req, res) {
+   res.sendFile(path.join(__dirname, "intern.html"));
+ });
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+ app.get("/employee", function (req, res) {
+   res.sendFile(path.join(__dirname, "employee.html"));
+ });
+ app.get("/manager", function (req, res) {
+   res.sendFile(path.join(__dirname, "manager.html"));
+ });
+ // Create New User //
+
+ app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+
+
+
+
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
