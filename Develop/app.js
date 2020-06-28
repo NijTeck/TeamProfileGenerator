@@ -1,3 +1,4 @@
+
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Employee = require("./lib/Employee");
@@ -10,10 +11,6 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
 
 async function init(employeeQuestions) {
    await inquirer.prompt({
@@ -120,8 +117,5 @@ fs.writeFile("Output/index.html", eliteTeam, function (err) {
     }
     console.log("Check out your team page now!");
 });
-//  const htmlData = render(employeeQuestions);
-//  writeToFile(outputPath, htmlData);
-}}
 
 init();
