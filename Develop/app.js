@@ -1,3 +1,4 @@
+
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Employee = require("./lib/Employee");
@@ -11,76 +12,110 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-const createManager = inquirer.prompt([
-    {
-   type: "input",
-   name: "managerName",
-   message: 'What is the managers name',
-
-},  
-  {
-    type: "input",
-    name: "ID",
-    message: 'Please provide ID number'
- },   {
-    type: "input",
-    name: "Email",
-    message: 'PLease provide Email'
- },   {
-    type: "input",
-    name: "Bin Location",
-    message: 'Where do you sit'
- }
-
-]).then(res=> {
-
+async function init(employeeQuestions) {
+   await inquirer.prompt({
+      type: "number",
+      message: "How many employees on your team?",
+      name: "teamMates"
 })
+           .then((data) => {
+               teamMates = data.teamMates + 1;
+          });
 
-// Linking to HTML pages //
-app.get("/", function (req, res) {
-   res.sendFile(path.join(__dirname, "home.html"));
- });
- app.get("/engineer", function (req, res) {
-   res.sendFile(path.join(__dirname, "engineer.html"));
- });
- app.get("/intern", function (req, res) {
-   res.sendFile(path.join(__dirname, "intern.html"));
- });
+   for (i = 1; i < teamMates; i++) {
+      let name;
+      let role;
+      let id;
+      let email;
+      
+      await inquirer.prompt([
+      { 
+          
+          type: "input",
+          message: "What is the employee's name?",
+          name: "name"
 
- app.get("/employee", function (req, res) {
-   res.sendFile(path.join(__dirname, "employee.html"));
- });
- app.get("/manager", function (req, res) {
-   res.sendFile(path.join(__dirname, "manager.html"));
- });
- // Create New User //
+      },{
+         
+          type: "list",
+          message: "What is the employee's role?",
+          name: "role",
+          choices: [
+              "Manager",
+              "Engineer",
+              "Intern" ]
 
- app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+      },{
+
+          type: "number",
+          message: "What is the employee's id number?",
+          name: "id"
+
+      },{
+
+          type: "input",
+          message: "What is the employee's email adress?",
+          name: "email"
+      }
+      ])
+          .then((data) => {
+              teammates = data.teamMates
+              name = data.name;
+              role = data.role;
+              id = data.id;
+              email = data.email;
+          });
+ //CREATE A SWITCH STATEMENT FOR ALL ROLES, . 
+switch (role) {
+case "Manager":
+await inquirer.prompt([{
+    type: "input",
+    message: "Office Number?",
+    name: "officeNumber"
+}])
+.then((data) => {
+    var manager = new Manager(name, id, email, data.officeNumber);
+    manager = fs.readFileSync("templates/manager.html");
+});
+
+// REPEAT  SAME STATEMENT AGAIN, WHILE JUST ADJUSTING THE TAGS
+// CREATE STATEMENT FOR ENGINEER
+break;
+case "Engineer":
+await inquirer.prompt([{
+    type: "input",
+    message: "What is your GitHub username?",
+    name: "gitHub"
+}])
+.then((data) => {
+    var engineer = new Engineer(name, id, email, data.gitHub);
+    manager = fs.readFileSync("templates/engineer.html");
+});
+
+// CREATE STATEMENT FOR INTERN
+break;
+case "Intern":
+await inquirer.prompt([{
+    type: "input",
+    message: "What school do you currently attend?",
+    name: "school"
+}])
+.then((data) => {
+    var intern = new Intern(name, id, email, data.school);
+    manager = fs.readFileSync("templates/intern.html");
+});
+break;
+
+}
 
 
+var eliteTeam = fs.readFileSync("templates/main.html");
+eliteTeam = eval('`' + eliteTeam + '`');
+fs.writeFile("Output/index.html", eliteTeam, function (err) {
+    if (err) {
+        return console.log(err);
+    }
+    console.log("Check out your team page now!");
+});
 
-
-
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+init();

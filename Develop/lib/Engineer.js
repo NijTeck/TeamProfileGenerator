@@ -14,15 +14,20 @@ class Engineer extends Employee {
     getRole() {
         return "Engineer";
     }
+    getName() {
+        return this.name;
+    }
     getID () {
         return this.id;
     }
     getEmail () {
         return this.email;
     }
-    
-    
+    getGithub () {
+        return this.github;
+    }
 }
 
+module.exports = Engineer;
 
 
